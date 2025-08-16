@@ -1,14 +1,22 @@
 {
-    "cSpell.words": [
-        "CHOOM",
-        "cmdk",
-        "embla",
-        "mirella",
-        "NEXTAUTH",
-        "nosniff",
-        "oklch",
-        "signup",
-        "sonner",
-        "Supabase"
-    ]
+  "css.validate": false,
+  "css.lint.unknownAtRules": "ignore",
+  "css.customData": [".vscode/css_custom_data.json"],
+  "files.associations": {
+    "*.css": "tailwindcss"
+},
+"cSpell.words": [
+    "CHOOM",
+    "cmdk",
+    "Consolas",
+    "embla",
+    "mirella",
+    "nosniff",
+    "oklch",
+    "orbitron",
+    "overscroll",
+    "rgba",
+    "sonner",
+    "swipeable"
+]
 }

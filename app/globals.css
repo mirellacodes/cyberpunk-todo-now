@@ -1,6 +1,19 @@
+/* 
+ * Tailwind CSS v4 Configuration
+ * This file uses Tailwind CSS v4 directives that may show linting warnings
+ * but are valid and necessary for the framework to work properly.
+ * 
+ * Directives used:
+ * - @custom-variant: For dark mode variants
+ * - @theme: For CSS custom properties
+ * - @apply: For applying utility classes
+ * - @layer: For organizing CSS layers
+ */
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Tailwind CSS v4 custom variant - suppress linting warning */
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -76,6 +89,7 @@
   --font-orbitron: "Orbitron", sans-serif;
 }
 
+/* Tailwind CSS v4 theme directive - suppress linting warning */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -119,9 +133,11 @@
 
 @layer base {
   * {
+    /* Tailwind CSS @apply directive - suppress linting warning */
     @apply border-border outline-ring/50;
   }
   body {
+    /* Tailwind CSS @apply directive - suppress linting warning */
     @apply bg-background text-foreground;
   }
 }
@@ -225,6 +241,132 @@
   /* Swipe hint animation */
   .swipe-hint {
     animation: swipe-hint-pulse 2s ease-in-out infinite;
+  }
+  
+  /* Swipeable todo item specific styles */
+  .swipeable-todo {
+    touch-action: pan-x;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  .swipeable-todo * {
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: auto;
+  }
+  
+  /* Smooth transform transitions for swipe */
+  .swipeable-todo {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+  
+  /* Action buttons container */
+  .swipe-actions {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  /* Drag handle specific styles */
+  [data-drag-handle] {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  
+  /* Prevent swipe on drag handle */
+  [data-drag-handle] * {
+    pointer-events: none;
+  }
+  
+  /* Ensure swipeable areas work properly */
+  [data-swipeable] {
+    touch-action: pan-x;
+  }
+  
+  /* Drag and drop optimizations */
+  .cyber-card {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  /* Smooth drag transitions */
+  .cyber-card[style*="transform"] {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+  
+  /* Drag handle hover effects */
+  .cyber-card button[class*="cursor-grab"]:hover {
+    transform: scale(1.1);
+    background-color: rgba(139, 92, 246, 0.1);
+  }
+  
+  .cyber-card button[class*="cursor-grabbing"] {
+    transform: scale(1.05);
+    background-color: rgba(139, 92, 246, 0.2);
+  }
+  
+  /* Improved touch handling for swipeable components */
+  .swipeable-todo {
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    background: inherit;
+    position: relative;
+    z-index: 20;
+  }
+  
+  /* Prevent text selection during touch interactions */
+  .swipeable-todo * {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  /* Allow text selection in input fields */
+  .swipeable-todo input {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+  
+  /* Action buttons container styling */
+  .swipe-actions {
+    background: rgba(51, 65, 85, 0.98) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-left: 1px solid rgba(139, 92, 246, 0.4);
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.4);
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 10;
+  }
+  
+  /* Ensure smooth swipe transitions */
+  .swipeable-todo {
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    background: inherit;
+  }
+  
+  /* Hide swipe hint when swiping */
+  .swipeable-todo[style*="translateX"] .text-xs {
+    opacity: 0 !important;
+  }
+  
+  /* Ensure the main card has a solid background */
+  .cyber-card {
+    background: inherit !important;
+    position: relative;
+    z-index: 20;
   }
 }
 

@@ -12,6 +12,8 @@ import {
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 import { SwipeableTodoItem } from "./swipeable-todo-item"
+import { TodoItem } from "./todo-item"
+import { useIsMobile } from "@/hooks/use-mobile"
 import type { Todo } from "@/app/page"
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core"
 import { useState } from "react"
@@ -26,6 +28,7 @@ interface TodoListProps {
 
 export function TodoList({ todos, onToggleTodo, onDeleteTodo, onEditTodo, onReorderTodos }: TodoListProps) {
   const [activeId, setActiveId] = useState<string | null>(null)
+  const isMobile = useIsMobile()
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -65,7 +68,29 @@ export function TodoList({ todos, onToggleTodo, onDeleteTodo, onEditTodo, onReor
   }
 
   return (
-    <DndContext
+    <>
+      {/* Mode indicator */}
+      <div className="text-center mb-4">
+        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono ${
+          isMobile 
+            ? "bg-blue-500/20 text-blue-400 border border-blue-500/30" 
+            : "bg-purple-500/20 text-purple-400 border border-purple-500/30"
+        }`}>
+          {isMobile ? (
+            <>
+              <span>📱</span>
+              <span>Mobile Mode - Swipe for actions</span>
+            </>
+          ) : (
+            <>
+              <span>💻</span>
+              <span>Desktop Mode - Hover for actions</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
@@ -75,13 +100,23 @@ export function TodoList({ todos, onToggleTodo, onDeleteTodo, onEditTodo, onReor
       <SortableContext items={todos.map((todo) => todo.id)} strategy={verticalListSortingStrategy}>
         <div className="space-y-3">
           {todos.map((todo) => (
-            <SwipeableTodoItem
-              key={todo.id}
-              todo={todo}
-              onToggle={() => onToggleTodo(todo.id)}
-              onDelete={() => onDeleteTodo(todo.id)}
-              onEdit={(newText: string) => onEditTodo(todo.id, newText)}
-            />
+            isMobile ? (
+              <SwipeableTodoItem
+                key={todo.id}
+                todo={todo}
+                onToggle={() => onToggleTodo(todo.id)}
+                onDelete={() => onDeleteTodo(todo.id)}
+                onEdit={(newText: string) => onEditTodo(todo.id, newText)}
+              />
+            ) : (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                onToggle={() => onToggleTodo(todo.id)}
+                onDelete={() => onDeleteTodo(todo.id)}
+                onEdit={(newText: string) => onEditTodo(todo.id, newText)}
+              />
+            )
           ))}
         </div>
       </SortableContext>
@@ -110,5 +145,6 @@ export function TodoList({ todos, onToggleTodo, onDeleteTodo, onEditTodo, onReor
         ) : null}
       </DragOverlay>
     </DndContext>
+    </>
   )
 }
