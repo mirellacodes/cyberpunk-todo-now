@@ -1,7 +1,7 @@
 # 🚀 Cyberpunk Todo Now
 
-A futuristic, cyberpunk-themed todo application built with Next.js, TypeScript, and Tailwind CSS.
-Checkout the website: https://taskmanager-mirella-2025.vercel.app/
+### A futuristic, cyberpunk-themed todo application built with Next.js, TypeScript, and Tailwind CSS.
+Check out the website: https://taskmanager-mirella-2025.vercel.app/
 
 ## ✨ Features
 
