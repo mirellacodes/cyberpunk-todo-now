@@ -70,39 +70,6 @@ A futuristic, cyberpunk-themed todo application built with Next.js, TypeScript, 
 
 ### Required Variables
 
-Create a `.env.local` file in the root directory:
-
-```bash
-# App Configuration
-NEXT_PUBLIC_APP_NAME="Cyberpunk Todo Now"
-NEXT_PUBLIC_APP_VERSION="1.0.0"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-
-# Feature Flags
-NEXT_PUBLIC_ENABLE_ANIMATIONS=true
-NEXT_PUBLIC_ENABLE_SOUND_EFFECTS=false
-NEXT_PUBLIC_ENABLE_ANALYTICS=false
-
-# Development
-NEXT_PUBLIC_DEBUG_MODE=true
-```
-
-### Optional Variables (for future features)
-
-```bash
-# Database (when you add one)
-DATABASE_URL="your_database_connection_string"
-SUPABASE_URL="your_supabase_url"
-SUPABASE_ANON_KEY="your_supabase_anon_key"
-
-# Authentication
-NEXTAUTH_SECRET="your_nextauth_secret"
-NEXTAUTH_URL="http://localhost:3000"
-
-# External Services
-OPENAI_API_KEY="your_openai_api_key"
-STRIPE_SECRET_KEY="your_stripe_secret_key"
-```
 
 ## 🚀 Deployment
 
