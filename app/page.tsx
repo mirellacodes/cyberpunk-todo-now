@@ -5,7 +5,7 @@ import { Header } from "@/components/header"
 import { TodoInput } from "@/components/todo-input"
 import { TodoList } from "@/components/todo-list"
 import { Toaster } from "react-hot-toast"
-import { generateId } from "@/lib/utils"
+import { useTodos } from "@/hooks/use-todos"
 
 export type Priority = "high" | "medium" | "low"
 
@@ -18,72 +18,24 @@ export interface Todo {
 }
 
 export default function TodoApp() {
-  const [todos, setTodos] = useState<Todo[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [isManuallyOrdered, setIsManuallyOrdered] = useState(false)
-
-  const addTodo = (text: string, priority: Priority) => {
-    const newTodo: Todo = {
-      id: generateId(),
-      text,
-      completed: false,
-      createdAt: new Date(),
-      priority,
-    }
-    setTodos((prev) => [newTodo, ...prev])
-  }
-
-  const toggleTodo = (id: string) => {
-    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)))
-  }
-
-  const deleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id))
-  }
-
-  const editTodo = (id: string, newText: string) => {
-    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, text: newText } : todo)))
-  }
+  
+  const {
+    todos,
+    isLoaded,
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    editTodo,
+    reorderTodos: reorderTodosHook,
+    sortTodosByPriority,
+  } = useTodos()
 
   const reorderTodos = (activeId: string, overId: string) => {
     console.log("[v0] Drag operation:", { activeId, overId, isManuallyOrdered })
-
-    setTodos((prev) => {
-      const currentDisplayTodos = isManuallyOrdered
-        ? prev.filter((todo) => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
-        : sortTodosByPriority(prev.filter((todo) => todo.text.toLowerCase().includes(searchQuery.toLowerCase())))
-
-      const oldIndex = currentDisplayTodos.findIndex((todo) => todo.id === activeId)
-      const newIndex = currentDisplayTodos.findIndex((todo) => todo.id === overId)
-
-      console.log("[v0] Indices:", { oldIndex, newIndex })
-
-      if (oldIndex === -1 || newIndex === -1) return prev
-
-      // Create new array based on current display order
-      const newTodos = [...currentDisplayTodos]
-      const [movedTodo] = newTodos.splice(oldIndex, 1)
-      newTodos.splice(newIndex, 0, movedTodo)
-
-      // Add back any todos that were filtered out
-      const filteredIds = new Set(currentDisplayTodos.map((t) => t.id))
-      const remainingTodos = prev.filter((todo) => !filteredIds.has(todo.id))
-
-      console.log("[v0] Final result:", newTodos.concat(remainingTodos))
-      return newTodos.concat(remainingTodos)
-    })
-
+    reorderTodosHook(activeId, overId, searchQuery, isManuallyOrdered)
     setIsManuallyOrdered(true)
-  }
-
-  const sortTodosByPriority = (todos: Todo[]) => {
-    const priorityOrder = { high: 3, medium: 2, low: 1 }
-    return [...todos].sort((a, b) => {
-      if (a.completed !== b.completed) {
-        return a.completed ? 1 : -1
-      }
-      return priorityOrder[b.priority] - priorityOrder[a.priority]
-    })
   }
 
   const filteredTodos = todos.filter((todo) => todo.text.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -95,7 +47,22 @@ export default function TodoApp() {
 
       <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <Header />
-        <TodoInput onAddTodo={addTodo} />
+        {!isLoaded ? (
+          <div className="text-center py-8">
+            <div className="text-purple-400 font-mono">Loading your tasks...</div>
+          </div>
+        ) : (
+          <>
+            <TodoInput onAddTodo={addTodo} />
+            {todos.length > 0 && (
+              <div className="text-center mb-4">
+                <div className="text-purple-400/70 text-sm font-mono">
+                  {todos.filter(t => !t.completed).length} active • {todos.filter(t => t.completed).length} completed
+                </div>
+              </div>
+            )}
+          </>
+        )}
         <div className="mb-6">
           <div className="relative">
             <input
@@ -119,28 +86,32 @@ export default function TodoApp() {
           {isManuallyOrdered && (
             <button
               onClick={() => setIsManuallyOrdered(false)}
-              className="mt-2 px-3 py-1 text-sm bg-purple-600/20 border border-purple-500/30 rounded text-purple-300 hover:bg-purple-600/30 transition-colors font-mono"
+              className="mt-2 text-purple-400/70 text-sm font-mono hover:text-purple-300 transition-colors"
             >
-              Sort by Priority
+              ↺ Reset to priority order
             </button>
           )}
         </div>
-        <TodoList
-          todos={displayTodos}
-          onToggleTodo={toggleTodo}
-          onDeleteTodo={deleteTodo}
-          onEditTodo={editTodo}
-          onReorderTodos={reorderTodos}
-        />
+
+        {isLoaded && (
+          <TodoList
+            todos={displayTodos}
+            onToggleTodo={toggleTodo}
+            onDeleteTodo={deleteTodo}
+            onEditTodo={editTodo}
+            onReorderTodos={reorderTodos}
+          />
+        )}
       </div>
+
       <Toaster
-        position="top-right"
+        position="bottom-right"
         toastOptions={{
+          duration: 3000,
           style: {
-            background: "#1e293b",
-            color: "#f1f5f9",
-            border: "1px solid #8b5cf6",
-            boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)",
+            background: '#1e1b4b',
+            color: '#e0e7ff',
+            border: '1px solid #8b5cf6',
           },
         }}
       />
