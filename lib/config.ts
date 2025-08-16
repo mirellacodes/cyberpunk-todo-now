@@ -2,7 +2,7 @@
 export const config = {
   // App Configuration
   app: {
-    name: process.env.NEXT_PUBLIC_APP_NAME || "Cyberpunk Todo Now",
+    name: process.env.NEXT_PUBLIC_APP_NAME || "CHOOM",
     version: process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0",
     url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   },

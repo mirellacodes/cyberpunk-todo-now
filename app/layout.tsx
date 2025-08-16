@@ -12,9 +12,9 @@ const orbitron = Orbitron({
 })
 
 export const metadata: Metadata = {
-  title: "Cyber Todo - Futuristic Task Manager",
+  title: "Futuristic Task Manager",
   description: "A cyberpunk-themed todo app built with Next.js",
-  generator: "v0.app",
+  generator: "mirella",
 }
 
 export default function RootLayout({

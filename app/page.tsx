@@ -119,12 +119,13 @@ export default function TodoApp() {
           {isManuallyOrdered && (
             <button
               onClick={() => setIsManuallyOrdered(false)}
-              className="mt-2 px-3 py-1 text-sm bg-purple-600/20 border border-purple-500/30 rounded text-purple-300 hover:bg-purple-600/30 transition-colors font-mono"
+              className="mt-2 text-purple-400/70 text-sm font-mono hover:text-purple-300 transition-colors"
             >
-              Sort by Priority
+              ↺ Reset to priority order
             </button>
           )}
         </div>
+
         <TodoList
           todos={displayTodos}
           onToggleTodo={toggleTodo}
@@ -133,14 +134,15 @@ export default function TodoApp() {
           onReorderTodos={reorderTodos}
         />
       </div>
+
       <Toaster
-        position="top-right"
+        position="bottom-right"
         toastOptions={{
+          duration: 3000,
           style: {
-            background: "#1e293b",
-            color: "#f1f5f9",
-            border: "1px solid #8b5cf6",
-            boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)",
+            background: '#1e1b4b',
+            color: '#e0e7ff',
+            border: '1px solid #8b5cf6',
           },
         }}
       />
