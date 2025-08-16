@@ -11,7 +11,7 @@ import {
 } from "@dnd-kit/core"
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
-import { SortableTodoItem } from "./sortable-todo-item"
+import { SwipeableTodoItem } from "./swipeable-todo-item"
 import type { Todo } from "@/app/page"
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core"
 import { useState } from "react"
@@ -75,12 +75,12 @@ export function TodoList({ todos, onToggleTodo, onDeleteTodo, onEditTodo, onReor
       <SortableContext items={todos.map((todo) => todo.id)} strategy={verticalListSortingStrategy}>
         <div className="space-y-3">
           {todos.map((todo) => (
-            <SortableTodoItem
+            <SwipeableTodoItem
               key={todo.id}
               todo={todo}
               onToggle={() => onToggleTodo(todo.id)}
               onDelete={() => onDeleteTodo(todo.id)}
-              onEdit={(newText) => onEditTodo(todo.id, newText)}
+              onEdit={(newText: string) => onEditTodo(todo.id, newText)}
             />
           ))}
         </div>
