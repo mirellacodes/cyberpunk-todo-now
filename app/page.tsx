@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { TodoInput } from "@/components/todo-input"
 import { TodoList } from "@/components/todo-list"
 import { Toaster } from "react-hot-toast"
+import { generateId } from "@/lib/utils"
 
 export type Priority = "high" | "medium" | "low"
 
@@ -23,7 +24,7 @@ export default function TodoApp() {
 
   const addTodo = (text: string, priority: Priority) => {
     const newTodo: Todo = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       text,
       completed: false,
       createdAt: new Date(),
